@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勇敢的人先享受世界</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<!-- Canvas粒子背景 -->
+<canvas id="particleCanvas"></canvas>
+
+<div class="body-wrap">
+    <!-- # component starts -->
+    <div class="pres-timeline" id="this-timeline">
+        <!-- ###   -->
+        <div class="periods-container">
+            <section class="period-single" period="period1">
+                <h2 class="province">辽宁</h2>
+                <h2 class="title">我的家乡</h2>
+            </section>
+            <section class="period-single" period="period2">
+                <h2 class="province">吉林</h2>
+                <h2 class="title">白山松水</h2>
+            </section>
+            <section class="period-single" period="period3">
+                <h2 class="province">北京</h2>
+                <h2 class="title">中国首都</h2>
+            </section>
+            <section class="period-single" period="period4">
+                <h2 class="province">四川</h2>
+                <h2 class="title">川渝巴蜀</h2>
+            </section>
+            <section class="period-single" period="period5">
+                <h2 class="province">山东</h2>
+                <h2 class="title">泰山北斗</h2>
+            </section>
+            <section class="period-single" period="period6">
+                <h2 class="province">浙江</h2>
+                <h2 class="title">才子佳人</h2>
+            </section>
+            <section class="period-single" period="period7">
+                <h2 class="province">江苏</h2>
+                <h2 class="title">烟雨江南</h2>
+            </section>
+            <section class="period-single" period="period8">
+                <h2 class="province">上海</h2>
+                <h2 class="title">纸醉金迷</h2>
+            </section>
+            <section class="period-single" period="period9">
+                <h2 class="province">河南</h2>
+                <h2 class="title">逐鹿中原</h2>
+            </section>
+            <section class="period-single" period="period10">
+                <h2 class="province">天津</h2>
+                <h2 class="title">海河之畔</h2>
+            </section>
+            <section class="period-single" period="period11">
+                <h2 class="province">下一站</h2>
+                <h2 class="title">永远在路上</h2>
+            </section>
+            <div class="btn-back"></div>
+            <div class="btn-next"></div>
+        </div>
+        <!-- ### -->
+        <div class="timeline-container">
+            <!--     # timeline graphic place holder - fill with js -->
+            <div class="timeline"></div>
+
+            <div class="btn-back">
+                <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h30v30H0z"/>
+                    <path fill="#667eea" fill-rule="evenodd"
+                          d="M11.828 15l7.89-7.89-2.83-2.828L6.283 14.89l.11.11-.11.11L16.89 25.72l2.828-2.83"/>
+                </svg>
+            </div>
+            <div class="btn-next">
+                <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none" d="M0 0h30v30H0z"/>
+                    <path fill="#667eea" fill-rule="evenodd"
+                          d="M18.172 14.718l-7.89-7.89L13.112 4l10.606 10.607-.11.11.11.11-10.608 10.61-2.828-2.83 7.89-7.89"/>
+                </svg>
+            </div>
+        </div>
+        <!-- ### -->
+        <div class="cards-container">
+            <section class="card-single active" period="period1">
+                <h4 class="year">2000.11.24</h4>
+                <h2 class="city">抚顺</h2>
+                <h3 class="title">我出生在这个普通重工业城市</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/FuShun2.webp" alt=""/>
+                    <p>零碎的记忆中，当年的抚顺很繁华</p>
+                </div>
+            </section>
+            <section class="card-single" period="period2">
+                <h4 class="year">2014.07.28</h4>
+                <h2 class="city">长白山</h2>
+                <h3 class="title">听说这里有水怪</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/ChangBaiShan1.webp" alt=""/>
+                    <p>没看见水怪，只看见了划船的朝鲜人</p>
+                    <p>北坡的盘山道真的很恐怖</p>
+                </div>
+            </section>
+            <section class="card-single" period="period1">
+                <h4 class="year">2018</h4>
+                <h2 class="city">抚顺</h2>
+                <h3 class="title">18年过去了</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/FuShun3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/FuShun5.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/FuShun6.webp" alt=""/>
+                    <p>我也该离开了</p>
+                </div>
+            </section>
+            <section class="card-single" period="period1">
+                <h4 class="year">2018.08.24</h4>
+                <h2 class="city">抚顺</h2>
+                <h3 class="title">要去大连上学了</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/FuShun7.webp" alt=""/>
+                    <p>真的离开抚顺了</p>
+                </div>
+            </section>
+            <section class="card-single" period="period1">
+                <h4 class="year">2018-2022</h4>
+                <h2 class="city">大连</h2>
+                <h3 class="title">很美的海滨城市</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/DaLian1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/DaLian2.webp" alt=""/>
+                    <p>如果没有疫情就好了</p>
+                </div>
+            </section>
+            <section class="card-single" period="period1">
+                <h4 class="year">2021.03.26</h4>
+                <h2 class="city">本溪</h2>
+                <h3 class="title">省内转转</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/BenXi1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/BenXi2.webp" alt=""/>
+                    <p>本溪水洞很壮观</p>
+                </div>
+            </section>
+            <section class="card-single" period="period1">
+                <h4 class="year">2021.04.04</h4>
+                <h2 class="city">营口</h2>
+                <h3 class="title">省内转转</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/YingKou1.webp" alt=""/>
+                    <p>还不错</p>
+                </div>
+            </section>
+            <section class="card-single" period="period3">
+                <h4 class="year">2021.09.18</h4>
+                <h2 class="city">北京</h2>
+                <h3 class="title">从没想过我会来到北京</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/BeiJing1.webp" alt=""/>
+                    <p>北漂生活开始了</p>
+                </div>
+            </section>
+            <section class="card-single" period="period3">
+                <h4 class="year">2022.12.07</h4>
+                <h2 class="city">北京</h2>
+                <h3 class="title">疫情解封了，也阳了</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/BeiJing2.webp" alt=""/>
+                    <p>从此刻起，我要环游世界~~~</p>
+                </div>
+            </section>
+            <section class="card-single" period="period4">
+                <h4 class="year">2023.04.28</h4>
+                <h2 class="city">都江堰</h2>
+                <h3 class="title">拜水都江堰</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/DuJiangYan2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/DuJiangYan3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/DuJiangYan1.webp" alt=""/>
+                    <p>问道青城山</p>
+                </div>
+            </section>
+            <section class="card-single" period="period4">
+                <h4 class="year">2023.04.29</h4>
+                <h2 class="city">乐山</h2>
+                <h3 class="title">樂</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/LeShan1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/LeShan2.webp" alt=""/>
+                    <p>乐山美食真是一绝。钵钵鸡、翘脚牛肉、甜皮鸭……</p>
+                </div>
+            </section>
+            <section class="card-single" period="period4">
+                <h4 class="year">2023.04.30</h4>
+                <h2 class="city">峨眉山</h2>
+                <h3 class="title">普贤菩萨的道场</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/EMeiShan4.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/EMeiShan2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/EMeiShan1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/EMeiShan3.webp" alt=""/>
+                    <p>山下半袖，山上棉袄……</p>
+                </div>
+            </section>
+            <section class="card-single" period="period4">
+                <h4 class="year">2023.05.02</h4>
+                <h2 class="city">成都</h2>
+                <h3 class="title">在成都的街头走一走</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/ChengDu1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ChengDu4.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ChengDu5.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ChengDu2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ChengDu3.webp" alt=""/>
+                    <p>在成都爱上了吃油碟</p>
+                </div>
+            </section>
+            <section class="card-single" period="period4">
+                <h4 class="year">2023</h4>
+                <h2 class="city">四川游玩参考攻略</h2>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/SiChuan.webp" alt=""/>
+                </div>
+            </section>
+            <section class="card-single" period="period5">
+                <h4 class="year">2023.07.28</h4>
+                <h2 class="city">泰山</h2>
+                <h3 class="title">小小泰山</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/TaiShan2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/TaiShan3.webp" alt=""/>
+                    <p>2小时17分钟登顶</p>
+                </div>
+            </section>
+            <section class="card-single" period="period5">
+                <h4 class="year">2023.07.29</h4>
+                <h2 class="city">济南</h2>
+                <h3 class="title">大明湖畔</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/JiNan2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/JiNan3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/JiNan1.webp" alt=""/>
+                    <p>可惜最后一天下了暴雨</p>
+                </div>
+            </section>
+            <section class="card-single" period="period6">
+                <h4 class="year">2023.12.29</h4>
+                <h2 class="city">杭州</h2>
+                <h3 class="title">说走就走的旅行</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/HangZhou1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/HangZhou2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/HangZhou3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/HangZhou4.webp" alt=""/>
+                    <p>吹过西湖的晚风了</p>
+                </div>
+            </section>
+            <section class="card-single" period="period7">
+                <h4 class="year">2023.12.30</h4>
+                <h2 class="city">苏州</h2>
+                <h3 class="title">烟雨入江南</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/SuZhou4.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/SuZhou3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/SuZhou2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/SuZhou1.webp" alt=""/>
+                    <p>真的很爱江南水乡</p>
+                </div>
+            </section>
+            <section class="card-single" period="period8">
+                <h4 class="year">2023.12.31</h4>
+                <h2 class="city">上海</h2>
+                <h3 class="title">繁华大都市</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/ShangHai1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ShangHai2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/ShangHai3.webp" alt=""/>
+                    <p>在外滩走过，看着繁华的景色，反而有种无力感……</p>
+                </div>
+            </section>
+            <section class="card-single" period="period8">
+                <h4 class="year">2023</h4>
+                <h3 class="title">江浙沪游玩参考攻略</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/JiangZheHu.webp" alt=""/>
+                </div>
+            </section>
+            <section class="card-single" period="period9">
+                <h4 class="year">2024.04.04</h4>
+                <h2 class="city">洛阳</h2>
+                <h3 class="title">风起洛阳城</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/LuoYang2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/LuoYang1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/LuoYang3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/LuoYang4.webp" alt=""/>
+                    <p>修仙时代是否真的存在过？</p>
+                </div>
+            </section>
+            <section class="card-single" period="period10">
+                <h4 class="year">2024.05.02</h4>
+                <h2 class="city">天津</h2>
+                <h3 class="title">邓紫棋演唱会</h3>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/TianJin1.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/TianJin5.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/TianJin2.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/TianJin3.webp" alt=""/>
+                    <img src="https://guohaolong.top/images/world/TianJin4.webp" alt=""/>
+                    <p>天津离北京很近，希望以后常去</p>
+                </div>
+            </section>
+            <section class="card-single" period="period11">
+                <h4 class="year">2026未完待续</h4>
+                <div class="content">
+                    <img src="https://guohaolong.top/images/world/Dream.webp" alt=""/>
+                </div>
+            </section>
+        </div>
+        <!-- ###   -->
+    </div>
+    <!-- # component ends -->
+</div>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src="./script.js"></script>
+
+</body>
+</html>
