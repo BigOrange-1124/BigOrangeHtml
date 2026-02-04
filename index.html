@@ -79,6 +79,9 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
         }
 
         body {
@@ -88,7 +91,10 @@
             background: #0a0a1a;
             min-height: 100vh;
             overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
+            width: 100vw;
+            max-width: 100vw;
         }
 
         /* ==================== 极光背景层 ==================== */
@@ -96,8 +102,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
@@ -105,9 +112,10 @@
 
         .aurora-layer {
             position: absolute;
-            width: 200%;
+            width: 100vw;
+            max-width: 100vw;
             height: 100%;
-            left: -50%;
+            left: 0;
             opacity: 0.4;
             filter: blur(80px);
             mix-blend-mode: screen;
@@ -147,17 +155,17 @@
 
         @keyframes auroraFlow1 {
             0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(25%); }
+            50% { transform: translateX(10vw); }
         }
 
         @keyframes auroraFlow2 {
             0%, 100% { transform: translateX(0) scaleY(1); }
-            50% { transform: translateX(-20%) scaleY(1.2); }
+            50% { transform: translateX(-10vw) scaleY(1.2); }
         }
 
         @keyframes auroraFlow3 {
             0%, 100% { transform: translateX(0) skewX(0deg); }
-            50% { transform: translateX(15%) skewX(3deg); }
+            50% { transform: translateX(8vw) skewX(3deg); }
         }
 
         /* 极光噪点层 - 防止banding */
@@ -178,8 +186,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
             z-index: 2;
             pointer-events: none;
             opacity: 0.6;
@@ -607,15 +616,13 @@
             font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 800;
             text-align: center;
-            margin-bottom: 4rem;
+            margin: 0 auto 4rem auto;
             background: var(--gradient-aurora-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            display: block;
             filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.5));
         }
 
@@ -1014,9 +1021,9 @@
 
         .tech-tag {
             padding: 0.4rem 1rem;
-            background: rgba(102, 126, 234, 0.12);
-            color: var(--aurora-primary);
-            border: 1px solid rgba(102, 126, 234, 0.25);
+            background: rgba(102, 126, 234, 0.25);
+            color: #ffffff;
+            border: 1px solid rgba(102, 126, 234, 0.4);
             border-radius: var(--radius-full);
             font-size: 0.875rem;
             font-weight: 500;
@@ -1043,15 +1050,12 @@
         }
 
         .tech-tag:hover {
-            background: linear-gradient(90deg,
-                rgba(102, 126, 234, 0.2),
-                rgba(6, 182, 212, 0.2));
-            color: var(--text-primary);
-            box-shadow:
-                0 0 15px rgba(102, 126, 234, 0.5),
-                0 0 30px rgba(6, 182, 212, 0.3),
-                inset 0 0 15px rgba(102, 126, 234, 0.1);
+            background: rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.6);
             transform: translateY(-2px);
+            box-shadow:
+                0 0 15px rgba(102, 126, 234, 0.4),
+                0 0 30px rgba(6, 182, 212, 0.2);
         }
 
         .tech-tag:hover::before {
@@ -1947,6 +1951,7 @@
                 </p>
                 <div class="tech-tags">
                     <span class="tech-tag">Java</span>
+                    <span class="tech-tag">MySQL</span>
                     <span class="tech-tag">Explain</span>
                 </div>
                 <div style="margin-top: 1.5rem;">
