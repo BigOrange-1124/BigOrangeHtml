@@ -1,0 +1,11 @@
+docker run -d -p 8081:80 \
+  --network network \
+  -e VITE_CUSTOM_API_KEY=c1b1c690e1974f8b84312ae41145ebd2.X7gTmeJNhpKiSSNW \
+  -e VITE_CUSTOM_API_BASE_URL=https://open.bigmodel.cn/api/paas/v4 \
+  -e VITE_CUSTOM_API_MODEL=GLM-4.5 \
+  --restart unless-stopped \
+  --name prompt \
+  registry.cn-guangzhou.aliyuncs.com/prompt-optimizer/prompt-optimizer
+
+
+  docker run --name nginx -p 443:443 -p 80:80 --network network   -v /path/to/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro   -v /path/to/nginx/logs:/var/log/nginx   -v /path/to/nginx/ssl:/etc/ssl   -v /etc/localtime:/etc/localtime   -v /path/to/nginx/html:/usr/share/nginx/html   -v /home/lighthouse/images:/mnt/images  -d nginx:stable-perl

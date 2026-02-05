@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 Claude Code Hooks 邮件通知配置详解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .code-block .comment {
+            color: #68d391;
+        }
+
+        .code-block .key {
+            color: #63b3ed;
+        }
+
+        .code-block .string {
+            color: #f687b3;
+        }
+
+        .code-block .number {
+            color: #fbbf24;
+        }
+
+        .note {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            color: #f39c12;
+        }
+
+        .warning {
+            background: #fee;
+            border-left: 4px solid #e74c3c;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning strong {
+            color: #e74c3c;
+        }
+
+        .tip {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip strong {
+            color: #4caf50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .diagram-box {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram-arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 0 10px;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .event-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .event-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .event-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            margin-right: 8px;
+        }
+
+        .config-file {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .config-file code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #c7254e;
+        }
+
+        .email-preview {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Claude Code Hooks 邮件通知工具</h1>
+            <p>基于实际配置的完整教程与实现详解</p>
+        </header>
+
+        <div class="content">
+            <!-- 概览 -->
+            <section class="section">
+                <h2>📋 系统概览</h2>
+
+                <p>本系统通过 Claude Code Hooks 实现了对关键事件的实时邮件通知。当特定事件发生时，系统会自动提取会话上下文，并通过 163 邮箱发送格式化的通知邮件。</p>
+
+                <div class="diagram">
+                    <div class="diagram-box">Claude Code 事件触发</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">读取会话历史</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Python 脚本处理</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">SMTP 发送邮件</div>
+                </div>
+
+                <div class="note">
+                    <strong>💡 核心特性：</strong>
+                    <ul>
+                        <li>✅ 自动提取会话中的用户和 Claude 消息</li>
+                        <li>✅ 支持 5 种不同类型的事件通知</li>
+                        <li>✅ 使用 163 邮箱 SMTP 服务发送邮件</li>
+                        <li>✅ 包含详细的事件说明和上下文</li>
+                        <li>✅ 完整的调试日志系统</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 配置文件结构 -->
+            <section class="section">
+                <h2>📁 配置文件结构</h2>
+
+                <div class="config-file">
+                    <strong>Claude Code 配置目录：</strong>
+                    <code>%USERPROFILE%\.claude\</code>
+                    <ul style="margin-top: 10px;">
+                        <li><code>settings.json</code> - Claude Code 主配置文件（包含 hooks 定义）</li>
+                        <li><code>hooks/</code> - Hooks 脚本目录
+                            <ul>
+                                <li><code>send_email.py</code> - 邮件发送脚本</li>
+                                <li><code>config.json</code> - Hooks 配置文件</li>
+                                <li><code>debug.log</code> - 调试日志</li>
+                            </ul>
+                        </li>
+                        <li><code>projects/</code> - 项目会话历史存储（用于提取消息）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Hooks 配置详解 -->
+            <section class="section">
+                <h2>⚙️ Hooks 配置详解</h2>
+
+                <h3>1. settings.json 配置</h3>
+                <p>位置：<code>%USERPROFILE%\.claude\settings.json</code></p>
+
+                <div class="code-block">{
+  <span class="key">"hooks"</span>: {
+    <span class="comment">// 通知事件 - 包含两个子类型</span>
+    <span class="key">"Notification"</span>: [
+      {
+        <span class="key">"matcher"</span>: <span class="string">"permission_prompt"</span>,  <span class="comment">// 权限提示</span>
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 1"</span>
+          }
+        ]
+      },
+      {
+        <span class="key">"matcher"</span>: <span class="string">"idle_prompt"</span>,  <span class="comment">// 空闲等待</span>
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 2"</span>
+          }
+        ]
+      }
+    ],
+
+    <span class="comment">// 权限请求事件</span>
+    <span class="key">"PermissionRequest"</span>: [
+      {
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 3"</span>
+          }
+        ]
+      }
+    ],
+
+    <span class="comment">// 会话结束事件</span>
+    <span class="key">"SessionEnd"</span>: [
+      {
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 4"</span>
+          }
+        ]
+      }
+    ],
+
+    <span class="comment">// 停止事件（包含 prompt hook）</span>
+    <span class="key">"Stop"</span>: [
+      {
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 5"</span>
+          },
+          {
+            <span class="key">"type"</span>: <span class="string">"prompt"</span>,  <span class="comment">// AI 评估是否应该停止</span>
+            <span class="key">"prompt"</span>: <span class="string">"你正在评估 Claude 是否应该停止工作..."</span>,
+            <span class="key">"timeout"</span>: <span class="number">30</span>
+          }
+        ]
+      }
+    ],
+
+    <span class="comment">// 工具使用后事件（自动格式化代码）</span>
+    <span class="key">"PostToolUse"</span>: [
+      {
+        <span class="key">"matcher"</span>: <span class="string">"Write|Edit"</span>,
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"prettier --write \"$TOOL_INPUT_file_path\" 2>/dev/null || true"</span>
+          }
+        ]
+      }
+    ]
+  }
+}</div>
+
+                <div class="tip">
+                    <strong>✓ 配置要点：</strong>
+                    <ul>
+                        <li>使用 <code>%USERPROFILE%</code> 环境变量确保路径跨用户兼容</li>
+                        <li>数字参数（1-5）对应不同的事件类型</li>
+                        <li>PostToolUse hook 使用 prettier 自动格式化代码</li>
+                        <li>Stop hook 结合了 command 和 prompt 两种类型</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 事件类型详解 -->
+            <section class="section">
+                <h2>🔔 事件类型详解</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>事件编号</th>
+                            <th>事件名称</th>
+                            <th>触发时机</th>
+                            <th>邮件标题</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>permission_prompt</td>
+                            <td>Claude 请求权限许可时</td>
+                            <td>🔔 Claude Code - 权限提示通知</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>idle_prompt</td>
+                            <td>Claude 进入空闲等待状态时</td>
+                            <td>💤 Claude Code - 空闲等待通知</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>permissionrequest</td>
+                            <td>正式的权限请求流程</td>
+                            <td>🔐 Claude Code - 权限请求确认</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>sessionend</td>
+                            <td>会话结束时</td>
+                            <td>🏁 Claude Code - 会话已结束</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>stop</td>
+                            <td>任务停止评估时</td>
+                            <td>🛑 Claude Code - 任务停止评估</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>事件详细说明</h3>
+
+                <div class="event-card">
+                    <h4><span class="event-badge">事件 1</span> 🔔 权限提示通知</h4>
+                    <p><strong>触发场景：</strong> Claude 需要执行某个操作但需要用户许可</p>
+                    <p><strong>典型情况：</strong></p>
+                    <ul>
+                        <li>执行系统命令前需要确认</li>
+                        <li>修改重要文件前请求授权</li>
+                        <li>访问网络资源前需要许可</li>
+                        <li>其他需要用户明确同意的操作</li>
+                    </ul>
+                </div>
+
+                <div class="event-card">
+                    <h4><span class="event-badge">事件 2</span> 💤 空闲等待通知</h4>
+                    <p><strong>触发场景：</strong> Claude 完成当前任务，等待下一步指示</p>
+                    <p><strong>典型情况：</strong></p>
+                    <ul>
+                        <li>等待用户回答问题</li>
+                        <li>需要用户提供更多信息</li>
+                        <li>等待用户选择或输入</li>
+                        <li>某个长时间操作完成后的等待状态</li>
+                    </ul>
+                </div>
+
+                <div class="event-card">
+                    <h4><span class="event-badge">事件 3</span> 🔐 权限请求确认</h4>
+                    <p><strong>触发场景：</strong> 正式的权限请求流程</p>
+                    <p><strong>说明：</strong> 这是一个更正式的权限请求，需要用户仔细审查并给予明确授权。</p>
+                </div>
+
+                <div class="event-card">
+                    <h4><span class="event-badge">事件 4</span> 🏁 会话已结束</h4>
+                    <p><strong>触发场景：</strong> Claude Code 会话正常结束</p>
+                    <p><strong>说明：</strong> 表示本次对话的所有交互已完成，会话历史已保存。</p>
+                </div>
+
+                <div class="event-card">
+                    <h4><span class="event-badge">事件 5</span> 🛑 任务停止评估</h4>
+                    <p><strong>触发场景：</strong> Claude 评估是否应该停止当前工作</p>
+                    <p><strong>评估内容：</strong></p>
+                    <ul>
+                        <li>✓ 用户请求的任务是否已完成</li>
+                        <li>✓ 是否存在需要处理的错误</li>
+                        <li>✓ 是否有后续工作需要执行</li>
+                        <li>✓ 当前工作流是否可以安全结束</li>
+                    </ul>
+                    <div class="note">
+                        <strong>💡 特别说明：</strong> 此事件同时触发 command hook（发送邮件）和 prompt hook（AI 评估是否应该停止）
+                    </div>
+                </div>
+            </section>
+
+            <!-- 邮件脚本详解 -->
+            <section class="section">
+                <h2>📧 邮件发送脚本详解</h2>
+
+                <h3>脚本位置</h3>
+                <div class="config-file">
+                    <code>%USERPROFILE%\.claude\hooks\send_email.py</code>
+                </div>
+
+                <h3>核心功能</h3>
+                <ol>
+                    <li><strong>SMTP 配置</strong> - 使用 163 邮箱发送邮件</li>
+                    <li><strong>会话历史提取</strong> - 从 Claude Code 项目会话文件中提取消息</li>
+                    <li><strong>事件类型映射</strong> - 将数字参数映射为具体的通知类型</li>
+                    <li><strong>邮件内容构建</strong> - 生成包含上下文的格式化邮件</li>
+                    <li><strong>调试日志</strong> - 记录执行过程便于排查问题</li>
+                </ol>
+
+                <h3>关键配置</h3>
+                <div class="code-block"><span class="comment"># ===== SMTP 配置 =====</span>
+SMTP_SERVER = <span class="string">"smtp.163.com"</span>       <span class="comment"># SMTP 服务器</span>
+SMTP_PORT = <span class="number">465</span>                     <span class="comment"># SMTP 端口</span>
+FROM_EMAIL = <span class="string">"***@163.com"</span>              <span class="comment"># 发件人邮箱</span>
+SMTP_AUTH_CODE = <span class="string">"***"</span>                   <span class="comment"># 授权码（非邮箱密码）</span>
+TO_EMAIL = <span class="string">"***@163.com"</span>                 <span class="comment"># 收件人邮箱</span></div>
+
+                <div class="warning">
+                    <strong>⚠️ 安全提示：</strong>
+                    <ul>
+                        <li>授权码需要在 163 邮箱设置中开启 SMTP 服务并获取</li>
+                        <li>不要将授权码提交到版本控制系统</li>
+                        <li>建议定期更换授权码以确保安全</li>
+                    </ul>
+                </div>
+
+                <h3>会话历史提取</h3>
+                <p>脚本会自动从 <code>%USERPROFILE%\.claude\projects\</code> 目录读取最新的项目会话文件（.jsonl），并提取：</p>
+                <ul>
+                    <li>最后一条用户消息</li>
+                    <li>最后一条 Claude 助手消息</li>
+                </ul>
+
+                <div class="code-block"><span class="keyword">def</span> <span class="function">get_last_user_message</span>():
+    <span class="comment"># 从最近的 Claude Code 会话中获取最后一条用户消息</span>
+    <span class="keyword">return</span> get_last_message(<span class="string">"user"</span>)
+
+<span class="keyword">def</span> <span class="function">get_last_assistant_message</span>():
+    <span class="comment"># 从最近的 Claude Code 会话中获取最后一条助手消息</span>
+    <span class="keyword">return</span> get_last_message(<span class="string">"assistant"</span>)</div>
+
+                <div class="tip">
+                    <strong>✓ 智能过滤：</strong> 脚本会自动过滤掉无效消息（如中断请求、工具调用等），只提取有意义的对话内容。
+                </div>
+
+                <h3>事件类型映射</h3>
+                <div class="code-block"><span class="comment"># 事件类型到邮件主题的映射</span>
+SUBJECT_MAP = {
+    <span class="string">"1"</span>: <span class="string">"🔔 Claude Code - 权限提示通知"</span>,
+    <span class="string">"2"</span>: <span class="string">"💤 Claude Code - 空闲等待通知"</span>,
+    <span class="string">"3"</span>: <span class="string">"🔐 Claude Code - 权限请求确认"</span>,
+    <span class="string">"4"</span>: <span class="string">"🏁 Claude Code - 会话已结束"</span>,
+    <span class="string">"5"</span>: <span class="string">"🛑 Claude Code - 任务停止评估"</span>
+}
+
+<span class="comment"># 兼容旧版字符串事件类型</span>
+EVENT_TYPE_MAP = {
+    <span class="string">"permission"</span>: <span class="string">"1"</span>,
+    <span class="string">"idle"</span>: <span class="string">"2"</span>,
+    <span class="string">"permissionrequest"</span>: <span class="string">"3"</span>,
+    <span class="string">"sessionend"</span>: <span class="string">"4"</span>,
+    <span class="string">"stop"</span>: <span class="string">"5"</span>
+}</div>
+
+                <h3>邮件内容模板</h3>
+                <p>每种事件类型都有专门的内容模板，包含：</p>
+                <ul>
+                    <li>时间戳</li>
+                    <li>用户最后消息（如有）</li>
+                    <li>Claude 最后回复（如有）</li>
+                    <li>事件详细说明</li>
+                    <li>后续操作建议</li>
+                </ul>
+            </section>
+
+            <!-- 邮件示例 -->
+            <section class="section">
+                <h2>📨 邮件内容示例</h2>
+
+                <h3>示例 1：权限提示通知（事件 1）</h3>
+                <div class="email-preview">时间: 2026-02-05 23:30:15
+
+────────────────────────────
+👤 用户最后消息:
+帮我创建一个新的 Python 脚本
+
+────────────────────────────
+🤖 Claude 最后回复:
+好的，我来帮你创建一个 Python 脚本。请告诉我这个脚本的主要功能是什么？
+
+────────────────────────────
+📋 事件详情：权限提示
+
+Claude Code 遇到了需要你确认的操作，正在等待你的许可。
+
+这可能包括：
+• 执行系统命令
+• 修改文件
+• 访问网络资源
+• 其他需要授权的操作
+
+👉 请打开 Claude Code 终端查看具体请求内容并进行确认。</div>
+
+                <h3>示例 2：空闲等待通知（事件 2）</h3>
+                <div class="email-preview">时间: 2026-02-05 23:45:30
+
+────────────────────────────
+👤 用户最后消息:
+优化这个函数的性能
+
+────────────────────────────
+🤖 Claude 最后回复:
+我已经分析了函数的性能瓶颈。主要问题在于重复计算和缺乏缓存。我建议使用记忆化技术来优化。你希望我直接实现这个优化，还是先看看具体的改进方案？
+
+────────────────────────────
+📋 事件详情：空闲提示
+
+Claude Code 已进入空闲等待状态。
+
+可能的原因：
+• 等待你回答问题
+• 需要你提供下一步的指示
+• 等待输入或选择
+• 正在等待某个操作完成
+
+👉 请登录 Claude Code 查看当前状态并继续对话。</div>
+
+                <h3>示例 3：会话结束（事件 4）</h3>
+                <div class="email-preview">时间: 2026-02-06 00:15:20
+
+────────────────────────────
+👤 用户最后消息:
+好的，今天就到这里
+
+────────────────────────────
+🤖 Claude 最后回复:
+好的，本次会话到此结束。我已经为你完成了代码优化、文档编写和测试用例编写。所有更改已保存到相应文件中。
+
+────────────────────────────
+📋 事件详情：会话结束
+
+Claude Code 当前会话已结束。
+
+会话总结：
+• 本次对话的所有交互已完成
+• 相关操作和任务已处理
+• 会话历史已保存
+
+你可以：
+• 开始新的会话
+• 查看历史会话记录
+• 检查生成的工作成果
+
+👉 感谢使用 Claude Code！</div>
+            </section>
+
+            <!-- 安装与配置步骤 -->
+            <section class="section">
+                <h2>🚀 安装与配置步骤</h2>
+
+                <h3>步骤 1：获取 163 邮箱授权码</h3>
+                <ol>
+                    <li>登录 163 邮箱网页版</li>
+                    <li>进入"设置" → "POP3/SMTP/IMAP"</li>
+                    <li>开启"POP3/SMTP"服务</li>
+                    <li>点击"客户端授权密码"，获取授权码</li>
+                    <li>保存授权码（不是邮箱登录密码）</li>
+                </ol>
+
+                <h3>步骤 2：配置 Python 环境</h3>
+                <div class="code-block"><span class="comment"># 确认 Python 已安装</span>
+python --version
+
+<span class="comment"># 安装依赖（如果需要）</span>
+<span class="comment"># 脚本只使用了标准库，无需额外安装</span></div>
+
+                <h3>步骤 3：修改邮件配置</h3>
+                <p>编辑 <code>%USERPROFILE%\.claude\hooks\send_email.py</code>，修改以下配置：</p>
+                <div class="code-block"><span class="comment"># 修改为你的邮箱配置</span>
+FROM_EMAIL = <span class="string">"your-email@163.com"</span>      <span class="comment"># 你的 163 邮箱</span>
+SMTP_AUTH_CODE = <span class="string">"your-auth-code"</span>        <span class="comment"># 你的授权码</span>
+TO_EMAIL = <span class="string">"recipient@163.com"</span>           <span class="comment"># 收件人邮箱</span></div>
+
+                <h3>步骤 4：配置 Claude Code Hooks</h3>
+                <p>编辑 <code>%USERPROFILE%\.claude\settings.json</code>，添加 hooks 配置：</p>
+                <div class="code-block">{
+  <span class="key">"hooks"</span>: {
+    <span class="key">"Notification"</span>: [
+      {
+        <span class="key">"matcher"</span>: <span class="string">"permission_prompt"</span>,
+        <span class="key">"hooks"</span>: [
+          {
+            <span class="key">"type"</span>: <span class="string">"command"</span>,
+            <span class="key">"command"</span>: <span class="string">"python %USERPROFILE%\\.claude\\hooks\\send_email.py 1"</span>
+          }
+        ]
+      }
+    ]
+  }
+}</div>
+
+                <h3>步骤 5：测试邮件发送</h3>
+                <div class="code-block"><span class="comment"># 直接运行脚本测试</span>
+python %USERPROFILE%\.claude\hooks\send_email.py 1
+
+<span class="comment"># 检查是否收到测试邮件</span></div>
+
+                <h3>步骤 6：查看调试日志</h3>
+                <div class="code-block"><span class="comment"># 日志文件位置</span>
+type %USERPROFILE%\.claude\hooks\debug.log</div>
+            </section>
+
+            <!-- PostToolUse Hook -->
+            <section class="section">
+                <h2>🎨 额外功能：代码自动格式化</h2>
+
+                <p>除了邮件通知，配置中还包含一个 <span class="highlight">PostToolUse</span> hook，用于自动格式化代码：</p>
+
+                <div class="code-block">{
+  <span class="key">"PostToolUse"</span>: [
+    {
+      <span class="key">"matcher"</span>: <span class="string">"Write|Edit"</span>,  <span class="comment">// 匹配 Write 和 Edit 工具</span>
+      <span class="key">"hooks"</span>: [
+        {
+          <span class="key">"type"</span>: <span class="string">"command"</span>,
+          <span class="key">"command"</span>: <span class="string">"prettier --write \"$TOOL_INPUT_file_path\" 2>/dev/null || true"</span>
+        }
+      ]
+    }
+  ]
+}</div>
+
+                <div class="tip">
+                    <strong>✓ 功能说明：</strong>
+                    <ul>
+                        <li>当 Claude 使用 Write 或 Edit 工具修改文件后自动触发</li>
+                        <li>使用 Prettier 自动格式化代码</li>
+                        <li><code>2>/dev/null || true</code> 确保即使格式化失败也不影响 Claude 继续工作</li>
+                        <li>需要预先安装 Prettier：<code>npm install -g prettier</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 故障排查 -->
+            <section class="section">
+                <h2>🔧 故障排查</h2>
+
+                <h3>问题 1：没有收到邮件</h3>
+                <ul>
+                    <li>检查 163 邮箱 SMTP 服务是否已开启</li>
+                    <li>确认授权码是否正确（不是登录密码）</li>
+                    <li>查看调试日志：<code>%USERPROFILE%\.claude\hooks\debug.log</code></li>
+                    <li>确认 Python 路径正确：<code>where python</code></li>
+                </ul>
+
+                <h3>问题 2：Hook 未触发</h3>
+                <ul>
+                    <li>确认 settings.json 配置格式正确</li>
+                    <li>检查路径中的双反斜杠：<code>\\</code></li>
+                    <li>确认 Python 脚本有执行权限</li>
+                    <li>在 settings.json 中检查 <code>"disableAllHooks": false</code></li>
+                </ul>
+
+                <h3>问题 3：提取的消息为空</h3>
+                <ul>
+                    <li>确认项目目录下有 .jsonl 会话文件</li>
+                    <li>检查消息内容是否被过滤（脚本会过滤过短或无效消息）</li>
+                    <li>查看 debug.log 中的错误信息</li>
+                </ul>
+
+
+            <!-- 总结 -->
+            <section class="section">
+                <h2>📊 系统总结</h2>
+
+                <div class="diagram">
+                    <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                        <h3 style="color: #667eea; margin-bottom: 20px;">完整工作流程</h3>
+                        <ol style="font-size: 1.1em; line-height: 2;">
+                            <li><strong>Claude Code 事件触发</strong>（如权限请求、空闲等待等）</li>
+                            <li><strong>执行 Hook 命令</strong>：<code>python send_email.py [事件编号]</code></li>
+                            <li><strong>脚本初始化</strong>：读取配置、准备日志</li>
+                            <li><strong>提取会话上下文</strong>：从项目历史中提取最后用户/助手消息</li>
+                            <li><strong>构建邮件内容</strong>：根据事件类型生成个性化邮件</li>
+                            <li><strong>发送邮件</strong>：通过 163 SMTP 服务器发送</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <h3>核心优势</h3>
+                <ul>
+                    <li>✅ <strong>实时通知</strong> - 关键事件立即发送邮件，不会错过重要操作</li>
+                    <li>✅ <strong>上下文丰富</strong> - 自动提取会话内容，无需查看终端即可了解情况</li>
+                    <li>✅ <strong>智能过滤</strong> - 自动排除无效消息，只提供有价值的信息</li>
+                    <li>✅ <strong>易于调试</strong> - 完整的日志系统，问题排查简单快速</li>
+                    <li>✅ <strong>可扩展性</strong> - 模块化设计，轻松添加新事件类型</li>
+                    <li>✅ <strong>容错机制</strong> - Hook 失败不影响 Claude Code 正常运行</li>
+                </ul>
+
+                <h3>技术栈</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><strong>配置文件</strong></td>
+                            <td>JSON (Claude Code settings.json)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>脚本语言</strong></td>
+                            <td>Python 3.x (使用标准库)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>邮件协议</strong></td>
+                            <td>SMTP (SMTP_SSL, port 465)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>邮件服务</strong></td>
+                            <td>163 邮箱</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hook 类型</strong></td>
+                            <td>command, prompt</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tip">
+                    <strong>💡 使用建议：</strong>
+                    <ul>
+                        <li>定期检查 debug.log 确保 hooks 正常运行</li>
+                        <li>根据实际需求调整事件触发频率</li>
+                        <li>考虑设置邮件过滤规则，分类管理通知</li>
+                        <li>对于高频事件，可以设置冷却期避免垃圾邮件</li>
+                        <li>定期更换邮箱授权码以保证安全</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ 注意事项：</strong>
+                    <ul>
+                        <li>邮件发送可能有几秒到几十秒的延迟</li>
+                        <li>确保网络连接正常，邮件发送需要互联网访问</li>
+                        <li>注意邮箱的发送频率限制，避免被标记为垃圾邮件</li>
+                        <li>敏感信息（如授权码）不要分享或上传到公开仓库</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 快速参考 -->
+            <section class="section">
+                <h2>📖 快速参考</h2>
+
+                <h3>文件位置速查</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><strong>Claude Code 配置</strong></td>
+                            <td><code>%USERPROFILE%\.claude\settings.json</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>邮件脚本</strong></td>
+                            <td><code>%USERPROFILE%\.claude\hooks\send_email.py</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>调试日志</strong></td>
+                            <td><code>%USERPROFILE%\.claude\hooks\debug.log</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>会话历史</strong></td>
+                            <td><code>%USERPROFILE%\.claude\projects\*\*.jsonl</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>事件编号速查</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><code>1</code></td>
+                            <td>permission_prompt</td>
+                            <td>🔔 权限提示通知</td>
+                        </tr>
+                        <tr>
+                            <td><code>2</code></td>
+                            <td>idle_prompt</td>
+                            <td>💤 空闲等待通知</td>
+                        </tr>
+                        <tr>
+                            <td><code>3</code></td>
+                            <td>permissionrequest</td>
+                            <td>🔐 权限请求确认</td>
+                        </tr>
+                        <tr>
+                            <td><code>4</code></td>
+                            <td>sessionend</td>
+                            <td>🏁 会话已结束</td>
+                        </tr>
+                        <tr>
+                            <td><code>5</code></td>
+                            <td>stop</td>
+                            <td>🛑 任务停止评估</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+        <div class="footer">
+            <p>🤖 Claude Code Hooks 邮件通知系统</p>
+            <p>基于实际配置 · 版本 1.0</p>
+            <p>创建时间: 2026-02-05 | 最后更新: 2026-02-05</p>
+        </div>
+    </div>
+</body>
+</html>
